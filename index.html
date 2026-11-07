@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tienes Una Invitación Especial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Le puse un ID al título para poder ocultarlo luego -->
+  <h1 class="titulo-invitacion" id="titulo">Tienes Una Invitación Especial!!</h1>
+
+  <div class="contenedor-sobre" id="sobre">
+    <div class="sobre-trasero"></div>
+    
+    <!-- La tarjeta con la foto -->
+    <div class="tarjeta-invitacion" id="tarjeta">
+      <img src="invitacion.jpg" alt="Invitación" class="foto-invitacion">
+    </div>
+
+    <!-- Bolsillo frontal (ahora es una sola pieza con clip-path para que no haya huecos) -->
+    <div class="sobre-frente"></div>
+
+    <!-- Tapa superior -->
+    <div class="solapa-frontal" id="solapa"></div>
+
+    <!-- Sello de cera -->
+    <div class="sello-cera" id="sello">
+      <span class="conejito">🐇</span>
+    </div>
+  </div>
+
+  <p class="instruccion" id="instruccion">✨ Toca el sobre para abrirlo ✨</p>
+  
+  <!-- Botón para cerrar la foto -->
+  <button class="boton-cerrar" id="boton-cerrar">✕</button>
+
+  <audio id="musica" src="cumpleaños.m4a" preload="auto" loop></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

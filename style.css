@@ -1,0 +1,207 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #3a2716 0%, #1a1008 100%);
+  font-family: 'Georgia', serif;
+  overflow: hidden;
+  padding: 20px;
+  transition: background 0.5s;
+}
+
+/* Ocultamos los textos cuando la foto está en pantalla completa */
+body.modo-lectura .titulo-invitacion,
+body.modo-lectura .instruccion {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.titulo-invitacion {
+  color: #d4af37;
+  text-shadow: 2px 2px 4px #000, 0 0 20px #b8860b;
+  font-size: clamp(1.4rem, 5vw, 2.5rem);
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 2px;
+  animation: brillo 3s infinite alternate;
+  font-weight: 700;
+  transition: opacity 0.5s;
+}
+
+@keyframes brillo {
+  from { text-shadow: 2px 2px 4px #000, 0 0 10px #b8860b; }
+  to   { text-shadow: 2px 2px 4px #000, 0 0 30px #ffd700; }
+}
+
+.instruccion {
+  margin-top: 2.5rem;
+  color: #d4af37;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+  animation: latir 2s infinite;
+  transition: opacity 0.5s;
+}
+
+@keyframes latir {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+/* ================= ESTRUCTURA DEL SOBRE ================= */
+.contenedor-sobre {
+  position: relative;
+  width: 320px;
+  height: 220px;
+  cursor: pointer;
+}
+
+.sobre-trasero {
+  position: absolute;
+  inset: 0;
+  background: #f4e4c1;
+  border-radius: 8px;
+  border: 2px solid #c9a96e;
+  z-index: 1;
+}
+
+/* Tarjeta (Foto) - Escondida adentro */
+.tarjeta-invitacion {
+  position: absolute;
+  width: 94%;
+  height: 90%;
+  top: 5%;
+  left: 3%;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 2; /* Capa 2: Debajo de los bolsillos */
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.foto-invitacion {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Bolsillo frontal - Una sola capa que cubre la parte de abajo */
+.sobre-frente {
+  position: absolute;
+  inset: 0;
+  background: #dec59c;
+  /* Hace la forma de V clásica del sobre */
+  clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+  z-index: 3; /* Capa 3: Tapa la foto por delante */
+  border-radius: 8px;
+  border: 2px solid #c9a96e;
+}
+
+/* Tapa superior */
+.solapa-frontal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #d4b88c;
+  clip-path: polygon(0 0, 50% 50%, 100% 0);
+  border-radius: 8px 8px 0 0;
+  transform-origin: top;
+  transition: transform 0.8s ease;
+  z-index: 4; /* Capa 4: Tapa todo por arriba */
+  transform: perspective(1000px) rotateX(0deg);
+}
+
+/* Sello de cera */
+.sello-cera {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75px;
+  height: 75px;
+  background: radial-gradient(circle at 30% 30%, #c93030, #7a0000 80%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  z-index: 5; /* Capa 5: Arriba de todo */
+  transition: opacity 0.4s, transform 0.4s;
+  border: 2px solid #5a0000;
+}
+
+.conejito {
+  font-size: 2.2rem;
+  filter: drop-shadow(1px 1px 2px #000);
+  transform: rotate(-15deg);
+}
+
+/* ================= ANIMACIONES DE APERTURA ================= */
+.contenedor-sobre.abierto .solapa-frontal {
+  transform: perspective(1000px) rotateX(180deg);
+  z-index: 1; /* Se va al fondo para no estorbar */
+}
+
+.contenedor-sobre.abierto .sello-cera {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0) rotate(90deg);
+}
+
+/* La carta sale del sobre */
+.contenedor-sobre.abierto .tarjeta-invitacion {
+  transform: translateY(-100px);
+  z-index: 4; /* Sube por encima del bolsillo (que era 3) */
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+}
+
+/* ================= PANTALLA COMPLETA ================= */
+.tarjeta-invitacion.pantalla-completa {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transform: translateY(0) !important; /* Anula la animación anterior */
+  border-radius: 0;
+  z-index: 9999; /* Por encima de todo en el universo */
+  background: #000;
+  transition: all 0.5s ease;
+}
+
+/* Ajuste de la foto en pantalla completa (para que no se corte) */
+.tarjeta-invitacion.pantalla-completa .foto-invitacion {
+  object-fit: contain; 
+}
+
+.boton-cerrar {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: 2px solid #d4af37;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.boton-cerrar.visible {
+  display: flex;
+}
